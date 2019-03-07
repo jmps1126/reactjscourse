@@ -1,24 +1,13 @@
 import React, {Component} from 'react';
-import convert from 'convert-units';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Location from './Location'
 import WeatherData from './WeatherData'
 import './styles.css';
+import transformWeather from './../../services/transformWeather';
 import {
-    SUN
-} from './../../constants/weathers'
+    api_weather
+} from './../../constants/api_url';
 
-const Location_country = "London,uk";
-const api_key = "361c49a12ced117e86fc92b052d60651";
-const url_base = "http://api.openweathermap.org/data/2.5/weather";
-
-const api_weather = `${url_base}?q=${Location_country}&appid=${api_key}`;
-
-const data  = {
-    temperature: 5,
-    weatherState: SUN,
-    humidity: 10,
-    wind: '10 m/s'
-};
 
 
 
@@ -28,40 +17,25 @@ class WeatherLocation extends Component {
         super();
         this.state = {
             city: 'Buenos Aires',
-            data: data
+            data: null
         }
     }
 
-    getTemp = kelvin =>{
-        return Number(convert(kelvin).from("K").to("C").toFixed(2));
-    };
-
-    getWeatherState = weather_data => {
-        return SUN;
-    };
-
-    getData = weather_data => {
-        const { humidity, temp } = weather_data.main;
-        const { speed } = weather_data.wind;
-        const weatherState = this.getWeatherState(weather_data);
-        const temperature = this.getTemp(temp);
-       
-        const data = {
-            humidity,
-            temperature,
-            weatherState,
-            wind: `${speed} m/s`
-        }
-
-        return data;
+    componentDidMount(){
+        this.handleUpdateClick();
     }
+
+    componentDidUpdate(){
+
+    }
+
 
     
     handleUpdateClick = () =>{
         fetch(api_weather).then( resolve => {
             return resolve.json();
         }).then(data => {
-            const newData = this.getData(data);
+            const newData = transformWeather(data);
             const newCity = data.name;
 
             console.log(newData);
@@ -78,8 +52,7 @@ class WeatherLocation extends Component {
         return (
             <div className="weatherLocationCont">
                 <Location city ={city}/>
-                <WeatherData data={data}/>
-                <button id="buttonUpdate" onClick={this.handleUpdateClick} >Actualizar</button>
+                {data ? <WeatherData data={data}/> : <CircularProgress size={50}/> }
             </div>
         );
     }
