@@ -5,7 +5,7 @@ import WeatherData from './../WeatherLocation/WeatherData';
 
 const ForecastItem = ({ weekDay, hour, data }) => (
     <div>
-        <div>{weekDay} hora: {hour} hs</div>
+        <h2>{weekDay} hora: {hour} hs</h2>
         <WeatherData data={data}></WeatherData>
     </div>
 );

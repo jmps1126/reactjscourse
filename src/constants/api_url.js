@@ -1,2 +1,3 @@
-export const api_key = "361c49a12ced117e86fc92b052d60651";
+export const api_key = "d77c6bed1e1611b8d976d5cc96f8ce10";
 export const url_base = "http://api.openweathermap.org/data/2.5/weather";
+export const url_forecast ="http://api.openweathermap.org/data/2.5/forecast"
