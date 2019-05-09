@@ -1,0 +1,24 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import ForecastExtended from './../components/ForecastExtended';
+
+class ForecastExtendedContainer extends Component {
+
+    render() {
+        console.log(this.props);
+        const { city, forecastData } = this.props;
+        return (
+            city &&
+            <ForecastExtended city={city} forecastData = {forecastData} />
+        );
+    }
+}
+
+ForecastExtendedContainer.propTypes = {
+    city: PropTypes.string.isRequired,
+    forecastData: PropTypes.array,
+};
+const mapStateToProps = ({ city, cities }) => ({ city, forecastData: cities[city] && cities[city].forecastData });
+
+export default connect(mapStateToProps, null)(ForecastExtendedContainer);
